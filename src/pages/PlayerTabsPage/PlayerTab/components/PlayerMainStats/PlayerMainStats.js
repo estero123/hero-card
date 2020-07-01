@@ -20,6 +20,7 @@ const PlayerMainStats = ({ clockTick, playerJob, playerLevel, playerId, playerMo
       playerJump={playerJump}
       playerCev={playerCev}
       playerBaseHit={playerBaseHit}
+      statistics={statistics}
     />
     <AdvancedStats playerRace={playerRace} playerJob={playerJob} statistics={statistics} playerId={playerId} playerSex={playerSex} playerType={playerType} playerLevel={playerLevel}/>
     <Separator />

@@ -9,7 +9,7 @@ const StatisticGenericWrapper = ({Component, playerId, field, ...props}) => {
     const data = {
       playerId,
       field,
-      value: event.target.value.trim()
+      value: typeof event.target.value === 'string' ? event.target.value.trim() : event.target.value
     };
     dispatch(setPlayerField(data));
   }, [playerId, field, dispatch]);

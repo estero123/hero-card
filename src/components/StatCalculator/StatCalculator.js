@@ -14,7 +14,7 @@ const StatCalculator = ({label, margin, onChange, value}) => {
   const onSubmit = React.useCallback(() => {
     const obj = {
       target: {
-        value: inputValue
+        value: Number(inputValue)
       }
     };
     onChange(obj);

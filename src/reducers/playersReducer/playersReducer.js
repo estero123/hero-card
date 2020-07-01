@@ -6,7 +6,7 @@ const initState = {
   players: {}
 };
 
-
+//
 // const initState = {
 //   players: {
 //     'pId-1': {
@@ -19,13 +19,18 @@ const initState = {
 //       playerZodiacSign: 'ARIES',
 //       playerJob: 'SQUIRE',
 //       playerLevel: 1,
-//       hp: 10,
-//       playerMove: 3,
-//       playerJump: 10,
-//       playerCev: 1,
 //       playerBaseHit: 1,
 //       playerActionSpeed: 1,
 //       statistics: {
+//         move: {
+//           custom: 0
+//         },
+//         jump: {
+//           custom: 0
+//         },
+//         cev: {
+//           custom: 0
+//         },
 //         hp: {
 //           customMax: 0,
 //           raw: 491540,
@@ -63,9 +68,15 @@ const initState = {
 //       playerZodiacSign: 'ARIES',
 //       playerJob: 'SQUIRE',
 //       playerLevel: 1,
-//       playerMove: 3,
-//       playerJump: 10,
-//       playerCev: 1,
+//       playerMove: {
+//         custom: 0
+//       },
+//       playerJump: {
+//         custom: 0
+//       },
+//       playerCev: {
+//         custom: 0
+//       },
 //       playerBaseHit: 1,
 //       playerActionSpeed: 1,
 //       statistics: {
@@ -94,9 +105,8 @@ const initState = {
 //           raw: 98304,
 //           custom: 0
 //         }
-//       }
-//     }
-//   }
+//       },
+//     }  }
 // };
 
 const playersReducer = (state = initState, action) => {

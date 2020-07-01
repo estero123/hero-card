@@ -21,21 +21,27 @@ const getPlayerLevelBonus = (raw, level, cValue) => {
   }
 };
 
-
 const AdvancedStats = ({ statistics, playerId, playerJob, playerRace, playerType, playerSex, playerLevel }) => {
 
   const getStatValue = (field) => {
     const job = getJob(playerJob);
     const bonus = Math.round(getPlayerLevelBonus(statistics[field].raw, playerLevel, job.c[field]));
     const multiplier = job.multipliers[field];
-    const result = (((statistics[field].raw + bonus) * multiplier) / MKL) + (Number(statistics[field].custom) || 0);
-    return Math.round(result);
+    const result = Math.round((((statistics[field].raw + bonus) * multiplier) / MKL) + (Number(statistics[field].custom) || 0));
+    const max = getStatMaxValue(field);
+    if (result > max) {
+      return max
+    } else {
+      return result
+    }
   };
 
   const getStatMaxValue = (field) => {
     const multiplier = getJob(playerJob).multipliers[field];
+    const job = getJob(playerJob);
     const raw = getRace(playerRace).rawStats[playerType][field][playerSex].max;
-    const result = ((raw * multiplier) / MKL) + (Number(statistics[field].customMax) || 0);
+    const bonus = Math.round(getPlayerLevelBonus(raw, playerLevel, job.c[field]));
+    const result = (((raw + bonus) * multiplier) / MKL) + (Number(statistics[field].customMax) || 0);
     return Math.round(result);
   };
 

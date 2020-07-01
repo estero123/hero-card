@@ -9,9 +9,21 @@ import playerJobOptions from "../../../../../../enums/playerJobOptions";
 import Row from "../../../../../../components/Row/Row.style";
 import Separator from "../../../../../../components/Separator/Separator";
 import StatisticGenericWrapper from "../../../../../../components/StatisticGenericWrapper/StatisticGenericWrapper";
+import getJob from "../../../../../../helpers/getJob";
 
 
-const BasicStats = ({playerJob, playerLevel, playerId, playerMove, playerJump, playerCev, playerBaseHit}) => {
+const BasicStats = ({playerJob, playerLevel, playerId, statistics, playerBaseHit}) => {
+
+  const getStatValue = (field) => {
+    const job = getJob(playerJob);
+    if (statistics[field]) {
+      const customValue = statistics[field].custom;
+      const result = job[field] + customValue;
+      return result;
+    }
+    return 0;
+  };
+
   return <Row><Container variant='column'>
     <Container>
       <BasicStat>
@@ -38,16 +50,16 @@ const BasicStats = ({playerJob, playerLevel, playerId, playerMove, playerJump, p
     <Container>
       <BasicStat contentTop='27px'>
         <StatisticGenericWrapper
-          value={playerMove}
-          field='playerMove'
+          value={getStatValue('move')}
+          field='statistics.move.custom'
           playerId={playerId}
           margin='0px 0px 5px 0px'
           label="MOVE"
           Component={StatCalculator}
         />
         <StatisticGenericWrapper
-          value={playerJump}
-          field='playerJump'
+          value={getStatValue('jump')}
+          field='statistics.jump.custom'
           playerId={playerId}
           label="JUMP"
           Component={StatCalculator}
@@ -57,8 +69,8 @@ const BasicStats = ({playerJob, playerLevel, playerId, playerMove, playerJump, p
     <Container>
       <BasicStat>
         <StatisticGenericWrapper
-          value={playerCev}
-          field='playerCev'
+          value={getStatValue('cev')}
+          field='statistics.cev.custom'
           playerId={playerId}
           label="Cev"
           Component={StatCalculator}

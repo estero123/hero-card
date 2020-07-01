@@ -16,12 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPlayerField } from "../../reducers/playersReducer/playersActions";
 import getRace from "../../helpers/getRace";
 import getRandomIntBetween from "../../helpers/getRandomIntBetween";
-import playerSexOptions from "../../enums/playerSexOptions";
-import playerTypeOptions from "../../enums/playerTypeOptions";
-import playerRaceOptions from "../../enums/playerRaceOptions";
-import playerZodiacSignOptions from "../../enums/playerZodiacSignOptions";
-import playerJobOptions from "../../enums/playerJobOptions";
 
+
+const redirectToTabs = history => {
+  window.open(window.location.origin + '/admin', '_blank', 'toolbar=0,location=0,menubar=0');
+  history.push('/player-tabs')
+};
 
 const PlayerSetupPage = () => {
   const history = useHistory();
@@ -46,9 +46,7 @@ const PlayerSetupPage = () => {
     });
 
 
-    window.open(window.location.origin + '/admin', '_blank', 'toolbar=0,location=0,menubar=0');
-
-    history.push('/player-tabs')
+    redirectToTabs(history);
   }, [dispatch, history, players]);
 
   const broadcastChannel = new BroadcastChannel('heroCard');
@@ -57,16 +55,52 @@ const PlayerSetupPage = () => {
   const addPlayer = React.useCallback(() => {
     const player = {
       playerId: uuidv4(),
-      playerName: '',
+      playerName: "",
       clockTick: 0,
-      playerSex: playerSexOptions[0].value,
-      playerType: playerTypeOptions[0].value,
-      playerRace: playerRaceOptions[0].value,
-      playerZodiacSign: playerZodiacSignOptions[0].value,
-      playerJob: playerJobOptions[0].value,
+      playerSex: 'MALE',
+      playerType: 'HERO',
+      playerRace: 'HUME',
+      playerZodiacSign: 'ARIES',
+      playerJob: 'SQUIRE',
       playerLevel: 1,
-      playerMove: 3,
-      playerJump: 10
+      playerBaseHit: 1,
+      playerActionSpeed: 1,
+      statistics: {
+        move: {
+          custom: 0
+        },
+        jump: {
+          custom: 0
+        },
+        cev: {
+          custom: 0
+        },
+        hp: {
+          customMax: 0,
+          raw: 0,
+          custom: 0
+        },
+        mp: {
+          customMax: 0,
+          raw: 0,
+          custom: 0
+        },
+        pa: {
+          customMax: 0,
+          raw: 0,
+          custom: 0
+        },
+        ma: {
+          customMax: 0,
+          raw: 0,
+          custom: 0
+        },
+        sp: {
+          customMax: 0,
+          raw: 0,
+          custom: 0
+        }
+      },
     };
     const broadcastMessage = {
       action: addPlayerAction(player)
@@ -80,7 +114,7 @@ const PlayerSetupPage = () => {
     if (playersKeys.length > 0) {
       playersKeys.map(playerKey => {
         const trimmedName = players[playerKey].playerName.trim();
-        if ( trimmedName ===  '') {
+        if (trimmedName === '') {
           isDisabled = true;
         }
         return false;
@@ -104,9 +138,9 @@ const PlayerSetupPage = () => {
         </Center>
         <PlayerName playerName='Setup players'/>
       </Header>
-      <div style={{display: 'flex', width: '75%'}}>
-      <Button onClick={() => addPlayer()} width='200px' margin='0px 0px 20px 0px'>Add player</Button>
-        </div>
+      <div style={{ display: 'flex', width: '75%' }}>
+        <Button onClick={() => addPlayer()} width='200px' margin='0px 0px 20px 0px'>Add player</Button>
+      </div>
       <Content id="contentSetup">
         <PlayerSetupContent/>
       </Content>
