@@ -1,0 +1,15 @@
+#statusTimeWrapper {
+    background-image: url("./statusTimeBg.png");
+    background-size: cover;
+    background-repeat:   no-repeat;
+    background-position: center center;
+    width: 316px;
+    height: 344px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#headerWrapper {
+    margin-top: 5px;
+}

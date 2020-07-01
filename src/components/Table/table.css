@@ -1,0 +1,15 @@
+table,
+td {
+    border: 1px solid black;
+    background-color: white;
+}
+
+table {
+    width: 100%;
+}
+
+thead,
+tfoot {
+    background-color: #fbb040;
+    color: #fff;
+}

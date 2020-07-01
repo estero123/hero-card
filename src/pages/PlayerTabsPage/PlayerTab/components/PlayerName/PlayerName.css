@@ -1,0 +1,15 @@
+#playerNameWrapper {
+    display: flex;
+    background-image: url('./playerNameBackground.png');
+    background-size: cover;
+    background-repeat:   no-repeat;
+    background-position: center center;
+    width: 458px;
+    height: 119px;
+}
+
+#playerNameText {
+    position: relative;
+    left: 30px;
+    top: 12px;
+}

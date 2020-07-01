@@ -1,0 +1,11 @@
+.sectionHeaderContainer {
+    background: url("./sectionHeaderBg.png");
+    height: 62px;
+    width: 213px;
+}
+
+.sectionHeaderText {
+    position: relative;
+    left: 58px;
+    top: 16px;
+}

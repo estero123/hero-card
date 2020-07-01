@@ -1,0 +1,7 @@
+.customButton {
+    margin-left: 3px;
+    margin-right: 3px;
+    border: 1px solid #000000;
+    background: url("./btnBg.png");
+    height: 33px;
+}
