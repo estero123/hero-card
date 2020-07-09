@@ -24,8 +24,8 @@ const StartPage = () => {
         <Text>NEW GAME</Text>
       </OrnamentButton>
         </StyledLink>
-        <OrnamentButton ><Text>LOAD GAME</Text></OrnamentButton>
-        <OrnamentButton ><Text>CREDITS</Text></OrnamentButton>
+        <OrnamentButton disabled={true}><Text>LOAD GAME</Text></OrnamentButton>
+        <OrnamentButton disabled={true}><Text>CREDITS</Text></OrnamentButton>
       </ButtonWrapper>
     </Container>
   </Background>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Input from "../../../components/Input/Input";
-import { setPlayerField } from "../../../reducers/playersReducer/playersActions";
+import { deletePlayer, setPlayerField } from "../../../reducers/playersReducer/playersActions";
 import { useDispatch } from "react-redux";
 import Select from "../../../components/Select/Select";
 import playerSexOptions from "../../../enums/playerSexOptions";
@@ -10,6 +10,7 @@ import playerRaceOptions from "../../../enums/playerRaceOptions";
 import playerZodiacSignOptions from "../../../enums/playerZodiacSignOptions";
 import playerJobOptions from "../../../enums/playerJobOptions";
 import BasicStat from "../../../components/BasicStat/BasicStat";
+import Button from "../../../components/Button/Button";
 
 const selectMargin = '0px 5px 0px 0px';
 
@@ -25,7 +26,14 @@ const PlayerSetupRow = ({ playerName, playerId, playerSex, playerType, playerRac
     dispatch(setPlayerField(data));
   }, [dispatch, playerId]);
 
-  return <Row margin='3px 0px' height='120px'>
+  const onDeletePlayer = React.useCallback(() => {
+    const data = {
+      playerId
+    };
+    dispatch(deletePlayer(data))
+  }, [playerId, dispatch]);
+
+  return <Row margin='3px 0px' height='120px' alignItems='center'>
     <BasicStat>
     <Input width='100px' placeholder='Player name' value={playerName} onChange={e => onChangePlayerData(e, 'playerName')}/>
     </BasicStat>
@@ -44,6 +52,7 @@ const PlayerSetupRow = ({ playerName, playerId, playerSex, playerType, playerRac
     <BasicStat>
     <Select margin={selectMargin} options={playerJobOptions} selected={playerJob} onChange={e => onChangePlayerData(e, 'playerJob')}/>
     </BasicStat>
+    <Button onClick={() => onDeletePlayer()}>Delete</Button>
   </Row>
 };
 export default PlayerSetupRow;

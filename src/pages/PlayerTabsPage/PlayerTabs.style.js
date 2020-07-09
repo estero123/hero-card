@@ -19,7 +19,11 @@ const StyledPlayerTab = styled(Tab)`
   padding: 5px;
   margin: 5px 5px 0px 5px;
   cursor: pointer;
-  
+`;
+
+const TabContent = styled.div`
+  display: flex;
+  align-items: baseline;
 `;
 
 const StyledTabs = styled(Tabs)`
@@ -31,4 +35,4 @@ const StyledTabs = styled(Tabs)`
     width: 100%;
 `;
 
-export {PlayersList, StyledPlayerTab, StyledTabs}
+export {PlayersList, StyledPlayerTab, StyledTabs, TabContent}

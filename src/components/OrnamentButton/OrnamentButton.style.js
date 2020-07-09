@@ -20,7 +20,7 @@ const OrnamentStyledButton = styled.button`
 `;
 
 const ButtonContentWrapper = styled.div`
-  margin-top: 20px;
+  margin-top: ${props => props.isOpera ? '-20px' : '20px'};
 `;
 
 export { OrnamentStyledButton, ButtonContentWrapper };
