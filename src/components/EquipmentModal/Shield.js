@@ -3,6 +3,7 @@ import Text from "../Text/Text";
 import { Container, StatsWrapper, Wrapper } from "./Weapon.style";
 import Select from "../Select/Select";
 import StatCalculator from "../StatCalculator/StatCalculator";
+import StatisticGenericWrapper from "../StatisticGenericWrapper/StatisticGenericWrapper";
 
 const options = [
   {
@@ -15,16 +16,38 @@ const options = [
   }
 ];
 
-const Shield = ({label}) => {
+const Shield = ({label, shield, playerId, field}) => {
   return <Container>
     <Text margin='0px 6px 0px 0px'>{label}:</Text>
     <StatsWrapper>
       <Wrapper>
-        <Select options={options} onChange={() => {}} selected={{}} />
+        <StatisticGenericWrapper
+          selected={shield.item}
+          field={`equipment.${field}.item`}
+          playerId={playerId}
+          options={options}
+          Component={Select}
+        />
       </Wrapper>
-      <StatCalculator margin='0px 6px 0px 12px' label='SMev: 0.0' />
-      <StatCalculator margin='0px 6px 0px 6px' label='SPev: 0.0' />
+      <StatisticGenericWrapper
+        key={`smEv-${field}`}
+        value={shield.statistics.smEv}
+        field={`equipment.${field}.statistics.smEv`}
+        playerId={playerId}
+        label="SMev"
+        margin='0px 6px 0px 12px'
+        Component={StatCalculator}
+      />
+      <StatisticGenericWrapper
+        key={`spEv-${field}`}
+        value={shield.statistics.spEv}
+        field={`equipment.${field}.statistics.spEv`}
+        playerId={playerId}
+        label="SPev"
+        margin='0px 6px 0px 6px'
+        Component={StatCalculator}
+      />
     </StatsWrapper>
   </Container>
 };
-export default Shield
+export default React.memo(Shield)

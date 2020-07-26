@@ -8,12 +8,12 @@ import StatCalculator from "../../../../../components/StatCalculator/StatCalcula
 import Evades from "../ActionTimeStatusTimeEvades/Evades/Evades";
 import Column from "../../../../../components/Column/Column.style";
 import StatisticGenericWrapper from "../../../../../components/StatisticGenericWrapper/StatisticGenericWrapper";
-const CtAvatar = ({clockTick, playerActionSpeed, playerId }) => {
+const CtAvatar = ({clockTick, playerActionSpeed, playerId, actionSpeedProgressBar }) => {
   return <Column alignItems='center' margin='5px 0px 0px 0px'>
     <ClockTick clockTick={clockTick}/>
     <Avatar/>
     <CtActionButtons />
-    <ProgressBar clockTick={clockTick} playerActionSpeed={playerActionSpeed} />
+    <ProgressBar clockTick={clockTick} playerActionSpeed={playerActionSpeed} actionSpeedProgressBar={actionSpeedProgressBar} />
     <StatisticGenericWrapper
       value={playerActionSpeed}
       field='playerActionSpeed'
@@ -27,4 +27,4 @@ const CtAvatar = ({clockTick, playerActionSpeed, playerId }) => {
   </Column>
 };
 
-export default CtAvatar;
+export default React.memo(CtAvatar);

@@ -2,6 +2,7 @@ import React from 'react';
 import Text from "../Text/Text";
 import { Container, StatsWrapper, Wrapper } from "./Weapon.style";
 import Select from "../Select/Select";
+import StatisticGenericWrapper from "../StatisticGenericWrapper/StatisticGenericWrapper";
 
 const options = [
   {
@@ -14,13 +15,25 @@ const options = [
   }
 ];
 
-const StandardEquipment = ({label}) => {
+const StandardEquipment = ({label, item, playerId, field}) => {
   return <Container>
     <Text margin='0px 6px 0px 0px'>{label}:</Text>
     <StatsWrapper>
       <Wrapper>
-        <Select options={options} onChange={() => {}} selected={{}} />
-        <Select options={options} onChange={() => {}} selected={{}} />
+        <StatisticGenericWrapper
+          selected={item.type}
+          field={`equipment.${field}.type`}
+          playerId={playerId}
+          options={options}
+          Component={Select}
+        />
+        <StatisticGenericWrapper
+          selected={item.item}
+          field={`equipment.${field}.item`}
+          playerId={playerId}
+          options={options}
+          Component={Select}
+        />
       </Wrapper>
     </StatsWrapper>
   </Container>

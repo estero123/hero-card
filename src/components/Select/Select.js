@@ -10,4 +10,4 @@ const Select = ({ options = [], onChange = () => {}, selected = {}, margin }) =>
   </StyledSelect>
 };
 
-export default Select;
+export default React.memo(Select);

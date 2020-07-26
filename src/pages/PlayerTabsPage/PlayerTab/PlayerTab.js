@@ -13,7 +13,7 @@ import playerZodiacSignOptions from "../../../enums/playerZodiacSignOptions";
 import playerSexOptions from "../../../enums/playerSexOptions";
 import playerRaceOptions from "../../../enums/playerRaceOptions";
 
-const PlayerTab = ({ playerName, clockTick, playerId, playerSex, playerRace, playerJob, playerZodiacSign, playerLevel, playerMove, playerJump, playerCev, playerBaseHit, playerActionSpeed, statistics, playerType }) => {
+const PlayerTab = ({ playerName, clockTick, playerId, playerSex, playerRace, playerJob, playerZodiacSign, playerLevel, playerMove, playerJump, playerCev, playerBaseHit, playerActionSpeed, statistics, playerType, actionSpeedProgressBar, equipment }) => {
 
   return <Container margin='0px 5px 0px 5px'>
     <Column>
@@ -33,7 +33,7 @@ const PlayerTab = ({ playerName, clockTick, playerId, playerSex, playerRace, pla
           </Column>
         </BasicStat>
       </Row>
-      <ActionButtons/>
+      <ActionButtons equipment={equipment} playerId={playerId} />
       <PlayerMainStats
         clockTick={clockTick}
         playerJob={playerJob}
@@ -48,6 +48,7 @@ const PlayerTab = ({ playerName, clockTick, playerId, playerSex, playerRace, pla
         playerRace={playerRace}
         playerSex={playerSex}
         playerType={playerType}
+        actionSpeedProgressBar={actionSpeedProgressBar}
       />
     </Column>
   </Container>

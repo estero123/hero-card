@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import {
-  CloseButton, MainModal,
+  CloseButton,
+  MainModal,
   ModalContent,
   ModalTitle,
   ModalTitleMark,
@@ -28,44 +29,58 @@ const Ornaments = ({ variant }) => {
 
 const Modal = ({ children, isOpen, onClose, title }) => {
 
-  const element = document.createElement('div');
+    const element = document.createElement('div');
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.marginRight = '17px';
-    }
+    const handleKeyUp = React.useCallback(e => {
+      const keys = {
+        27: () => {
+          e.preventDefault();
+          onClose();
+          window.removeEventListener('keyup', handleKeyUp, false);
+        },
+      };
 
-    modalRoot.appendChild(element);
-    return () => {
-      document.body.style.overflow = 'auto';
-      document.body.style.marginRight = '0px';
-      modalRoot.removeChild(element)
-    };
-  }, [element, isOpen]);
+      if (keys[e.keyCode]) {
+        keys[e.keyCode]();
+      }
+    }, [onClose]);
 
-  return isOpen && createPortal(<Wrapper>
-    <MainModal>
-    <Ornaments/>
-    <OrnamentsWrapper>
-      <Ornament width='auto' src={ornSide}/>
-      <ModalContent>
-        <ModalTitle>
-          <TitleWrapper>
-            <ModalTitleMark src={modalTitleMark} alt='modalTitleMark'/>
-            <Text variant='big'>{title}</Text>
-          </TitleWrapper>
-          <CloseButton onClick={() => onClose()}>X</CloseButton>
-        </ModalTitle>
+    useEffect(() => {
+      if (isOpen) {
+        document.body.style.overflow = 'hidden';
+        document.body.style.marginRight = '17px';
+      }
+      window.addEventListener('keyup', handleKeyUp, false);
+      modalRoot.appendChild(element);
+      return () => {
+        document.body.style.overflow = 'auto';
+        document.body.style.marginRight = '0px';
+        window.removeEventListener('keyup', handleKeyUp, false);
+        modalRoot.removeChild(element)
+      };
+    }, [element, isOpen, handleKeyUp]);
 
-        {children}
-      </ModalContent>
-      <Ornament width='auto' src={ornSide}/>
-    </OrnamentsWrapper>
-    <Ornaments variant='bottom'/>
-    </MainModal>
-  </Wrapper>, element)
+    return isOpen && createPortal(<Wrapper>
+      <MainModal>
+        <Ornaments/>
+        <OrnamentsWrapper>
+          <Ornament width='auto' src={ornSide}/>
+          <ModalContent>
+            <ModalTitle>
+              <TitleWrapper>
+                <ModalTitleMark src={modalTitleMark} alt='modalTitleMark'/>
+                <Text variant='big'>{title}</Text>
+              </TitleWrapper>
+              <CloseButton onClick={() => onClose()}>X</CloseButton>
+            </ModalTitle>
+            {children}
+          </ModalContent>
+          <Ornament width='auto' src={ornSide}/>
+        </OrnamentsWrapper>
+        <Ornaments variant='bottom'/>
+      </MainModal>
+    </Wrapper>, element)
+  }
+;
 
-};
-
-export default Modal;
+export default React.memo(Modal);

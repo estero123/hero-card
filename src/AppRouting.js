@@ -19,4 +19,4 @@ const AppRouting = () => {
   </Router>
 };
 
-export default AppRouting;
+export default React.memo(AppRouting);

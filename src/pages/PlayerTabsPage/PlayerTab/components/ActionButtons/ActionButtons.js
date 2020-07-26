@@ -4,7 +4,7 @@ import EquipmentModal from "../../../../../components/EquipmentModal/EquipmentMo
 import MagickModal from "../../../../../components/MagickModal/MagickModal";
 import Container from "../../../../../components/Container/Container";
 
-const ActionButtons = () => {
+const ActionButtons = ({ equipment, playerId }) => {
 
   const [isModalEquipmentOpen, setModalEquipmentOpen] = useState(false);
   const [isModalMagickOpen, setModalMagickOpen] = useState(false);
@@ -18,8 +18,8 @@ const ActionButtons = () => {
     <Button>K.O</Button>
     <Button onClick={toggleEquipment}>Equipment</Button>
     <Button onClick={toggleMagick}>Magick</Button>
-    <EquipmentModal isOpen={isModalEquipmentOpen} title="Equipment" onClose={toggleEquipment} />
-    <MagickModal isOpen={isModalMagickOpen} title="Magick" onClose={toggleMagick} />
+    <EquipmentModal equipment={equipment} playerId={playerId} isOpen={isModalEquipmentOpen} title="Equipment" onClose={() => setModalEquipmentOpen(false)}/>
+    <MagickModal isOpen={isModalMagickOpen} title="Magick" onClose={() => setModalMagickOpen(false)}/>
   </Container>
 };
 

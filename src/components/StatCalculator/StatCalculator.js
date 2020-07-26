@@ -9,9 +9,11 @@ const StatCalculator = ({label, margin, onChange, value}) => {
 
   const handleInputChange = React.useCallback(event => {
     setInputValue(event.target.value);
+    event.stopPropagation();
+    event.preventDefault();
   }, [setInputValue]);
 
-  const onSubmit = React.useCallback(() => {
+  const onSubmit = React.useCallback(e => {
     const obj = {
       target: {
         value: Number(inputValue)
@@ -19,6 +21,8 @@ const StatCalculator = ({label, margin, onChange, value}) => {
     };
     onChange(obj);
     setInputValue('');
+    e.stopPropagation();
+    e.preventDefault();
   }, [inputValue, onChange]);
 
   return <Wrapper margin={margin}>
@@ -28,4 +32,4 @@ const StatCalculator = ({label, margin, onChange, value}) => {
   </Wrapper>
 };
 
-export default StatCalculator;
+export default React.memo(StatCalculator);

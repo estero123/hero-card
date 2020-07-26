@@ -148,4 +148,4 @@ const AdvancedStats = ({ statistics, playerId, playerJob, playerRace, playerType
     </div>
   </div>
 };
-export default AdvancedStats;
+export default React.memo(AdvancedStats);

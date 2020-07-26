@@ -9,9 +9,9 @@ import StatusTime from "../ActionTimeStatusTimeEvades/StatusTime/StatusTime";
 import Column from "../../../../../components/Column/Column.style";
 import Separator from "../../../../../components/Separator/Separator";
 
-const PlayerMainStats = ({ clockTick, playerJob, playerLevel, playerId, playerMove, playerJump, playerCev, playerBaseHit, playerActionSpeed, statistics, playerRace, playerType, playerSex }) => {
+const PlayerMainStats = ({ clockTick, playerJob, playerLevel, playerId, playerMove, playerJump, playerCev, playerBaseHit, playerActionSpeed, statistics, playerRace, playerType, playerSex, actionSpeedProgressBar }) => {
   return <Container>
-    <CtAvatar clockTick={clockTick} playerActionSpeed={playerActionSpeed} playerId={playerId}/>
+    <CtAvatar clockTick={clockTick} playerActionSpeed={playerActionSpeed} playerId={playerId} actionSpeedProgressBar={actionSpeedProgressBar} />
     <BasicStats
       playerJob={playerJob}
       playerLevel={playerLevel}
