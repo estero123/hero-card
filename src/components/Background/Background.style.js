@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import tabBackground from './../../pages/PlayerTabsPage/tabBackground.jpg';
+import tabBackground from './../../assets/tabBackground.jpg';
 
 const StyledBackground = styled.div`
   width: 100%;

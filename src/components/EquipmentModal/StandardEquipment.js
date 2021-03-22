@@ -3,35 +3,31 @@ import Text from "../Text/Text";
 import { Container, StatsWrapper, Wrapper } from "./Weapon.style";
 import Select from "../Select/Select";
 import StatisticGenericWrapper from "../StatisticGenericWrapper/StatisticGenericWrapper";
+import useEquipment from "../../hooks/useEquipment";
 
-const options = [
-  {
-    label: 'Head 1',
-    value: 'H-1'
-  },
-  {
-    label: 'Body 1',
-    value: 'B-1'
-  }
-];
+const StandardEquipment = ({ label, item, playerId, field, listProp, typeListProp, listService, typeService }) => {
 
-const StandardEquipment = ({label, item, playerId, field}) => {
+  const { equipmentList, equipmentTypeList, onResetEquipmentType } = useEquipment(listProp, typeListProp, listService, typeService, item, playerId, field);
+
+  const optionsFilteredByType = equipmentList && equipmentList.filter(w => w.typeId === item.typeId);
+
   return <Container>
     <Text margin='0px 6px 0px 0px'>{label}:</Text>
     <StatsWrapper>
       <Wrapper>
         <StatisticGenericWrapper
-          selected={item.type}
-          field={`equipment.${field}.type`}
+          selected={item.typeId}
+          field={`equipment.${field}.typeId`}
           playerId={playerId}
-          options={options}
+          options={equipmentTypeList}
+          customOnChange={onResetEquipmentType}
           Component={Select}
         />
         <StatisticGenericWrapper
-          selected={item.item}
-          field={`equipment.${field}.item`}
+          selected={item.equipmentId}
+          field={`equipment.${field}.equipmentId`}
           playerId={playerId}
-          options={options}
+          options={optionsFilteredByType}
           Component={Select}
         />
       </Wrapper>

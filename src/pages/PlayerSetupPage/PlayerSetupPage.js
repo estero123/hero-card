@@ -14,8 +14,22 @@ import { v4 as uuidv4 } from "uuid";
 import { addPlayerAction } from "../../reducers/adminStateReducer/adminStateActions";
 import { useDispatch, useSelector } from "react-redux";
 import { setPlayerField } from "../../reducers/playersReducer/playersActions";
-import getRace from "../../helpers/getRace";
 import getRandomIntBetween from "../../helpers/getRandomIntBetween";
+import useZodiacSign from "../../hooks/useZodiacSign";
+import usePlayerGender from "../../hooks/usePlayerGender";
+import usePlayerType from "../../hooks/usePlayerType";
+import usePlayerJob from "../../hooks/usePlayerJob";
+import usePlayerRace from "../../hooks/usePlayerRace";
+import useEquipment from "../../hooks/useEquipment";
+import weaponService from "../../services/weaponService";
+import weaponTypeService from "../../services/weaponTypeService";
+import shieldService from "../../services/shieldService";
+import headService from "../../services/headService";
+import headTypeService from "../../services/headTypeService";
+import bodyService from "../../services/bodyService";
+import bodyTypeService from "../../services/bodyTypeService";
+import accessoryService from "../../services/accessoryService";
+import accessoryTypeService from "../../services/accessoryTypeService";
 
 
 const redirectToTabs = history => {
@@ -23,16 +37,30 @@ const redirectToTabs = history => {
   history.push('/player-tabs')
 };
 
+const getPlayerBaseHit = () => 1;
+const getPlayerActionSpeed = () => 1;
+
 const PlayerSetupPage = () => {
   const history = useHistory();
 
-  const players = useSelector(state => state.players).players || [];
+  const players = useSelector(state => state.gameState.players) || [];
   const dispatch = useDispatch();
+
+  const { zodiacSignList } = useZodiacSign();
+  const { genderList } = usePlayerGender();
+  const { playerTypeList } = usePlayerType();
+  const { playerJobList } = usePlayerJob();
+  const { playerRaceList, getPlayerRace } = usePlayerRace();
+  const { equipmentList: weaponList, equipmentTypeList: weaponTypeList } = useEquipment('weaponList', 'weaponTypeList', weaponService, weaponTypeService);
+  const { equipmentList: shieldList } = useEquipment('shieldList', undefined, shieldService, undefined);
+  const { equipmentList: headList, equipmentTypeList: headTypeList } = useEquipment('headList', 'headTypeList', headService, headTypeService);
+  const { equipmentList: bodyList, equipmentTypeList: bodyTypeList } = useEquipment('bodyList', 'bodyTypeList', bodyService, bodyTypeService);
+  const { equipmentList: accessoryList, equipmentTypeList: accessoryTypeList } = useEquipment('accessoryList', 'accessoryTypeList', accessoryService, accessoryTypeService);
 
   const startGame = React.useCallback(() => {
     Object.keys(players).forEach(playerKey => {
       const player = players[playerKey];
-      const rawStats = getRace(player.playerRace).rawStats[player.playerType];
+      const rawStats = getPlayerRace(player.playerRace).rawStats[player.playerType];
       Object.keys(rawStats).forEach(statKey => {
         const rawStat = rawStats[statKey][player.playerSex];
         const randomStatValue = getRandomIntBetween(rawStat.min, rawStat.max);
@@ -47,24 +75,35 @@ const PlayerSetupPage = () => {
 
 
     redirectToTabs(history);
-  }, [dispatch, history, players]);
+  }, [dispatch, history, players, getPlayerRace]);
 
   const broadcastChannel = new BroadcastChannel('heroCard');
 
+  const getEquipmentDefault = React.useCallback((list, typeList) => {
+    const typeId = typeList[0].id;
+    const itemId = list.find(i => i.typeId === typeId).id;
+    return [typeId, itemId];
+  }, []);
 
   const addPlayer = React.useCallback(() => {
+
+    const [weaponTypeId, weaponId] = getEquipmentDefault(weaponList, weaponTypeList);
+    const [headTypeId, headId] = getEquipmentDefault(headList, headTypeList);
+    const [bodyTypeId, bodyId] = getEquipmentDefault(bodyList, bodyTypeList);
+    const [accessoryTypeId, accessoryId] = getEquipmentDefault(accessoryList, accessoryTypeList);
+
     const player = {
       playerId: uuidv4(),
       playerName: "",
       clockTick: 0,
-      playerSex: 'MALE',
-      playerType: 'HERO',
-      playerRace: 'HUME',
-      playerZodiacSign: 'ARIES',
-      playerJob: 'SQUIRE',
+      playerSex: genderList[0].id,
+      playerType: playerTypeList[0].id,
+      playerRace: playerRaceList[0].id,
+      playerZodiacSign: zodiacSignList[0].id,
+      playerJob: playerJobList[0].id,
       playerLevel: 1,
-      playerBaseHit: 1,
-      playerActionSpeed: 1,
+      playerBaseHit: getPlayerBaseHit(),
+      playerActionSpeed: getPlayerActionSpeed(),
       statistics: {
         move: {
           custom: 0
@@ -73,6 +112,12 @@ const PlayerSetupPage = () => {
           custom: 0
         },
         cev: {
+          custom: 0
+        },
+        br: {
+          custom: 0
+        },
+        fa: {
           custom: 0
         },
         hp: {
@@ -101,12 +146,63 @@ const PlayerSetupPage = () => {
           custom: 0
         }
       },
+      equipment: {
+        firstWeapon: {
+          typeId: weaponTypeId,
+          equipmentId: weaponId,
+          custom: {
+            dmg: 0,
+            wev: 0,
+            wp: 0
+          }
+        },
+        secondWeapon: {
+          typeId: weaponTypeId,
+          equipmentId: weaponId,
+          custom: {
+            dmg: 0,
+            wev: 0,
+            wp: 0
+          }
+        },
+        firstShield: {
+          equipmentId: shieldList[0].id,
+          custom: {
+            msEv: 0,
+            psEv: 0
+          }
+        },
+        secondShield: {
+          equipmentId: shieldList[0].id,
+          custom: {
+            msEv: 0,
+            psEv: 0
+          }
+        },
+        head: {
+          typeId: headTypeId,
+          equipmentId: headId,
+        },
+        body: {
+          typeId: bodyTypeId,
+          equipmentId: bodyId,
+        },
+        accessory: {
+          typeId: accessoryTypeId,
+          equipmentId: accessoryId,
+          custom: {
+            paEv: 0,
+            maEv: 0
+          }
+        }
+      }
+
     };
     const broadcastMessage = {
       action: addPlayerAction(player)
     };
     broadcastChannel.postMessage(broadcastMessage);
-  }, [broadcastChannel]);
+  }, [broadcastChannel, genderList, playerJobList, playerRaceList, playerTypeList, zodiacSignList, weaponList, weaponTypeList, accessoryList, accessoryTypeList, bodyList, bodyTypeList, getEquipmentDefault, headList, headTypeList, shieldList]);
 
   const checkDisabled = React.useCallback(() => {
     let isDisabled = false;

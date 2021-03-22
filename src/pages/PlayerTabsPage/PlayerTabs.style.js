@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import { Tab, TabList, Tabs } from "react-tabs";
 
-import tabBackground from './tabBackground.jpg';
-
 const PlayersList = styled(TabList)`
   margin: 0px;
   padding: 0px;
@@ -27,12 +25,6 @@ const TabContent = styled.div`
 `;
 
 const StyledTabs = styled(Tabs)`
-    background: url(${tabBackground});
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    height: 100vh;
-    width: 100%;
 `;
 
 export {PlayersList, StyledPlayerTab, StyledTabs, TabContent}

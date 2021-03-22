@@ -4,7 +4,7 @@ import playersReducer from "./playersReducer/playersReducer";
 
 const reducers = combineReducers({
   adminState: adminStateReducer,
-  players: playersReducer
+  gameState: playersReducer
 });
 
 export default reducers;

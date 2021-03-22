@@ -16,7 +16,7 @@ const ActionButtons = ({ equipment, playerId }) => {
     <Button>reset top</Button>
     <Button>save card state</Button>
     <Button>K.O</Button>
-    <Button onClick={toggleEquipment}>Equipment</Button>
+    <Button isDisabled={true} onClick={toggleEquipment}>Equipment</Button>
     <Button onClick={toggleMagick}>Magick</Button>
     <EquipmentModal equipment={equipment} playerId={playerId} isOpen={isModalEquipmentOpen} title="Equipment" onClose={() => setModalEquipmentOpen(false)}/>
     <MagickModal isOpen={isModalMagickOpen} title="Magick" onClose={() => setModalMagickOpen(false)}/>

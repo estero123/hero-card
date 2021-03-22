@@ -4,43 +4,40 @@ import { Container, StatsWrapper, Wrapper } from "./Weapon.style";
 import StatCalculator from "../StatCalculator/StatCalculator";
 import Text from "../Text/Text";
 import StatisticGenericWrapper from "../StatisticGenericWrapper/StatisticGenericWrapper";
-
-const options = [
-  {
-    label: 'Weapon 1',
-    value: 'W-1'
-  },
-  {
-    label: 'Weapon 2',
-    value: 'W-2'
-  }
-]
+import useEquipment from "../../hooks/useEquipment";
+import weaponService from "../../services/weaponService";
+import weaponTypeService from "../../services/weaponTypeService";
 
 const Weapon = ({ label, weapon, playerId, field = 'firstWeapon' }) => {
+
+  const { equipmentList: weaponList, equipmentTypeList: weaponTypeList, getEquipmentPropValue: getValue, onResetEquipmentType: onResetEquipment } = useEquipment('weaponList', 'weaponTypeList', weaponService, weaponTypeService, weapon, playerId, field);
+
+  const weaponOptions = weaponList.filter(w => w.typeId === weapon.typeId);
 
   return <Container>
     <Text margin='0px 6px 0px 0px'>{label}:</Text>
     <StatsWrapper>
       <Wrapper>
         <StatisticGenericWrapper
-          selected={weapon.type}
-          field={`equipment.${field}.type`}
+          selected={weapon.typeId}
+          field={`equipment.${field}.typeId`}
           playerId={playerId}
-          options={options}
+          options={weaponTypeList}
+          customOnChange={onResetEquipment}
           Component={Select}
         />
         <StatisticGenericWrapper
-          selected={weapon.item}
-          field={`equipment.${field}.item`}
+          selected={weapon.equipmentId}
+          field={`equipment.${field}.equipmentId`}
           playerId={playerId}
-          options={options}
+          options={weaponOptions}
           Component={Select}
         />
       </Wrapper>
       <StatisticGenericWrapper
         key={`dmg-${field}`}
-        value={weapon.statistics.dmg}
-        field={`equipment.${field}.statistics.dmg`}
+        value={getValue('dmg') + weapon.custom.dmg}
+        field={`equipment.${field}.custom.dmg`}
         playerId={playerId}
         label="DMG"
         margin='0px 6px 0px 12px'
@@ -48,8 +45,8 @@ const Weapon = ({ label, weapon, playerId, field = 'firstWeapon' }) => {
       />
       <StatisticGenericWrapper
         key={`wev-${field}`}
-        value={weapon.statistics.wev}
-        field={`equipment.${field}.statistics.wev`}
+        value={getValue('wev') + weapon.custom.wev}
+        field={`equipment.${field}.custom.wev`}
         playerId={playerId}
         label="Wev"
         margin='0px 6px 0px 6px'
@@ -57,8 +54,8 @@ const Weapon = ({ label, weapon, playerId, field = 'firstWeapon' }) => {
       />
       <StatisticGenericWrapper
         key={`wp-${field}`}
-        value={weapon.statistics.wp}
-        field={`equipment.${field}.statistics.wp`}
+        value={getValue('wp') + weapon.custom.wp}
+        field={`equipment.${field}.custom.wp`}
         playerId={playerId}
         label="WP"
         margin='0px 6px 0px 6px'

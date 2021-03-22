@@ -4,7 +4,7 @@ import PlayerSetupRow from "./PlayerSetupRow/PlayerSetupRow";
 import Column from "../../components/Column/Column.style";
 
 const PlayerSetupContent = () => {
-  const players = useSelector(state => state.players).players || [];
+  const players = useSelector(state => state.gameState.players) || [];
 
   return <Column>
     <Column>

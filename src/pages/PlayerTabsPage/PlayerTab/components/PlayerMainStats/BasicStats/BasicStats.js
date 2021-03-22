@@ -5,18 +5,19 @@ import Select from "../../../../../../components/Select/Select";
 import StatCalculator from "../../../../../../components/StatCalculator/StatCalculator";
 import Container from "../../../../../../components/Container/Container";
 import levelOptions from "../../../../../../enums/levelOptions";
-import playerJobOptions from "../../../../../../enums/playerJobOptions";
 import Row from "../../../../../../components/Row/Row.style";
 import Separator from "../../../../../../components/Separator/Separator";
 import StatisticGenericWrapper from "../../../../../../components/StatisticGenericWrapper/StatisticGenericWrapper";
-import getJob from "../../../../../../helpers/getJob";
+import usePlayerJob from "../../../../../../hooks/usePlayerJob";
 
 
 const BasicStats = ({playerJob, playerLevel, playerId, statistics, playerBaseHit}) => {
 
+  const { playerJobList, getPlayerJob } = usePlayerJob();
+
   const getStatValue = (field) => {
-    const job = getJob(playerJob);
     if (statistics[field]) {
+      const job = getPlayerJob(playerJob);
       const customValue = statistics[field].custom;
       const result = job[field] + customValue;
       return result;
@@ -42,7 +43,7 @@ const BasicStats = ({playerJob, playerLevel, playerId, statistics, playerBaseHit
           selected={playerJob}
           field='playerJob'
           playerId={playerId}
-          options={playerJobOptions}
+          options={playerJobList}
           Component={Select}
         />
       </BasicStat>

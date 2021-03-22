@@ -4,46 +4,40 @@ import { Container, StatsWrapper, Wrapper } from "./Weapon.style";
 import Select from "../Select/Select";
 import StatCalculator from "../StatCalculator/StatCalculator";
 import StatisticGenericWrapper from "../StatisticGenericWrapper/StatisticGenericWrapper";
+import useEquipment from "../../hooks/useEquipment";
+import shieldService from "../../services/shieldService";
 
-const options = [
-  {
-    label: 'Shield 1',
-    value: 'S-1'
-  },
-  {
-    label: 'Shield 2',
-    value: 'S-2'
-  }
-];
+const Shield = ({ label, shield, playerId, field }) => {
 
-const Shield = ({label, shield, playerId, field}) => {
+  const { equipmentList, getEquipmentPropValue } = useEquipment('shieldList', undefined, shieldService, undefined, shield, playerId, field);
+
   return <Container>
     <Text margin='0px 6px 0px 0px'>{label}:</Text>
     <StatsWrapper>
       <Wrapper>
         <StatisticGenericWrapper
-          selected={shield.item}
-          field={`equipment.${field}.item`}
+          selected={shield.equipmentId}
+          field={`equipment.${field}.equipmentId`}
           playerId={playerId}
-          options={options}
+          options={equipmentList}
           Component={Select}
         />
       </Wrapper>
       <StatisticGenericWrapper
-        key={`smEv-${field}`}
-        value={shield.statistics.smEv}
-        field={`equipment.${field}.statistics.smEv`}
+        key={`msEv-${field}`}
+        value={getEquipmentPropValue('msEv') + shield.custom.msEv}
+        field={`equipment.${field}.custom.msEv`}
         playerId={playerId}
-        label="SMev"
+        label="MSev"
         margin='0px 6px 0px 12px'
         Component={StatCalculator}
       />
       <StatisticGenericWrapper
-        key={`spEv-${field}`}
-        value={shield.statistics.spEv}
-        field={`equipment.${field}.statistics.spEv`}
+        key={`psEv-${field}`}
+        value={getEquipmentPropValue('psEv') + shield.custom.psEv}
+        field={`equipment.${field}.custom.psEv`}
         playerId={playerId}
-        label="SPev"
+        label="PSev"
         margin='0px 6px 0px 6px'
         Component={StatCalculator}
       />

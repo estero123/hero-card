@@ -3,9 +3,9 @@ import AdvancedStat from "../../../../../../components/AdvancedStat/AdvancedStat
 import BasicStat from "../../../../../../components/BasicStat/BasicStat";
 import StatCalculator from "../../../../../../components/StatCalculator/StatCalculator";
 import StatisticGenericWrapper from "../../../../../../components/StatisticGenericWrapper/StatisticGenericWrapper";
-import getJob from "../../../../../../helpers/getJob";
 import MKL from "../../../../../../enums/MKL";
-import getRace from "../../../../../../helpers/getRace";
+import usePlayerJob from "../../../../../../hooks/usePlayerJob";
+import usePlayerRace from "../../../../../../hooks/usePlayerRace";
 
 const getPlayerLevelBonus = (raw, level, cValue) => {
   if (level === 1) {
@@ -23,8 +23,10 @@ const getPlayerLevelBonus = (raw, level, cValue) => {
 
 const AdvancedStats = ({ statistics, playerId, playerJob, playerRace, playerType, playerSex, playerLevel }) => {
 
+  const { getPlayerJob } = usePlayerJob();
+  const { getPlayerRace } = usePlayerRace();
   const getStatValue = (field) => {
-    const job = getJob(playerJob);
+    const job = getPlayerJob(playerJob);
     const bonus = Math.round(getPlayerLevelBonus(statistics[field].raw, playerLevel, job.c[field]));
     const multiplier = job.multipliers[field];
     const result = Math.round((((statistics[field].raw + bonus) * multiplier) / MKL) + (Number(statistics[field].custom) || 0));
@@ -37,9 +39,10 @@ const AdvancedStats = ({ statistics, playerId, playerJob, playerRace, playerType
   };
 
   const getStatMaxValue = (field) => {
-    const multiplier = getJob(playerJob).multipliers[field];
-    const job = getJob(playerJob);
-    const raw = getRace(playerRace).rawStats[playerType][field][playerSex].max;
+    const job = getPlayerJob(playerJob);
+    const race = getPlayerRace(playerRace);
+    const multiplier = job.multipliers[field];
+    const raw = race.rawStats[playerType][field][playerSex].max;
     const bonus = Math.round(getPlayerLevelBonus(raw, playerLevel, job.c[field]));
     const result = (((raw + bonus) * multiplier) / MKL) + (Number(statistics[field].customMax) || 0);
     return Math.round(result);

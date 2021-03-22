@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 
 const PlayerTabsPage = () => {
   const [selectedPlayer, setSelectedPlayer] = useState(0);
-  const players =  useSelector(state => state.players).players || [];
+  const players =  useSelector(state => state.gameState.players) || [];
   const dispatch = useDispatch();
 
   const onDeletePlayer = React.useCallback((e, playerId, playerTabIndex) => {

@@ -6,7 +6,7 @@ import PlayerMagickRow from "./PlayerMagickRow/PlayerMagickRow";
 
 const MagickModal = ({ isOpen, onClose, title }) => {
 
-  const players = useSelector(state => state.players).players || [];
+  const players = useSelector(state => state.gameState.players) || [];
 
   return <Modal isOpen={isOpen} onClose={onClose} title={title}>
     <Wrapper>

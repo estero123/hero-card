@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
-import bg from './.././../pages/PlayerTabsPage/tabBackground.jpg';
+import bg from '../../assets/tabBackground.jpg';
 
 const Wrapper = styled.div`
-position: absolute;
+position: fixed;
   width: 100%;
   height: 100%;
   left: 0;

@@ -7,29 +7,38 @@ import Column from "../../../components/Column/Column.style";
 import Row from "../../../components/Row/Row.style";
 import Text from "../../../components/Text/Text";
 import BasicStat from "../../../components/BasicStat/BasicStat";
-import StatCalculator from "../../../components/StatCalculator/StatCalculator";
-import getOptionLabel from "../../../helpers/getOptionLabel";
-import playerZodiacSignOptions from "../../../enums/playerZodiacSignOptions";
-import playerSexOptions from "../../../enums/playerSexOptions";
-import playerRaceOptions from "../../../enums/playerRaceOptions";
+import useZodiacSign from "../../../hooks/useZodiacSign";
+import usePlayerRace from "../../../hooks/usePlayerRace";
+import usePlayerGender from "../../../hooks/usePlayerGender";
+import useEquipment from "../../../hooks/useEquipment";
+import weaponService from "../../../services/weaponService";
+import weaponTypeService from "../../../services/weaponTypeService";
+import BraveFaith from "./components/BraveFaith/BraveFaith";
 
 const PlayerTab = ({ playerName, clockTick, playerId, playerSex, playerRace, playerJob, playerZodiacSign, playerLevel, playerMove, playerJump, playerCev, playerBaseHit, playerActionSpeed, statistics, playerType, actionSpeedProgressBar, equipment }) => {
+
+  const { getZodiacSign } = useZodiacSign();
+  const { getPlayerRace } = usePlayerRace();
+  const { getPlayerGender } = usePlayerGender();
+  const { getEquipment: getWeapon } = useEquipment('weaponList', 'weaponTypeList', weaponService, weaponTypeService);
+
+  const getWeaponDmg = weapon => equipment[weapon] && equipment[weapon].equipmentId ? getWeapon(equipment[weapon].equipmentId).dmg + equipment[weapon].custom.dmg : 0;
 
   return <Container margin='0px 5px 0px 5px'>
     <Column>
       <Row alignItems='center'>
         <PlayerName playerName={playerName}/>
-        <BasicStat><Text variant='big'>{getOptionLabel(playerZodiacSign, playerZodiacSignOptions)}</Text></BasicStat>
+        <BasicStat><Text variant='big'>{getZodiacSign(playerZodiacSign).label}</Text></BasicStat>
         <BasicStat><Text
-          variant='big'>{getOptionLabel(playerSex, playerSexOptions)} {getOptionLabel(playerRace, playerRaceOptions)}</Text></BasicStat>
+          variant='big'>{getPlayerGender(playerSex).label} {getPlayerRace(playerRace).label}</Text></BasicStat>
         <BasicStat contentTop='27px'>
-          <StatCalculator margin='0px 0px 5px 0px' label="Faith: 15" valuePath='player[id].stats.faith'/>
-          <StatCalculator label="Brave: 15" valuePath='player[id].stats.brave'/>
+          <BraveFaith equipment={equipment} playerId={playerId} statistics={statistics} label="Faith" field='fa' />
+          <BraveFaith equipment={equipment} playerId={playerId} statistics={statistics} label="Brave" field='br' />
         </BasicStat>
         <BasicStat contentTop='27px'>
           <Column>
-            <Text>Weapon 1 DMG: 12</Text>
-            <Text>Weapon 1 DMG: 12</Text>
+            <Text>Weapon 1 DMG: {getWeaponDmg('firstWeapon')}</Text>
+            <Text>Weapon 2 DMG: {getWeaponDmg('secondWeapon')}</Text>
           </Column>
         </BasicStat>
       </Row>
